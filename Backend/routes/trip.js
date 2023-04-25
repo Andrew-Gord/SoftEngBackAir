@@ -8,7 +8,9 @@ const auth =  require('../middleware/auth');
 
 const router = express.Router();
 
-router.get('/', auth, eventController.fetchAll);
+router.delete('/:id',auth,eventController.deleteTrip)
+
+router.get('/:id', auth, eventController.fetchAll);
 
 router.post(
     '/',
