@@ -6,6 +6,7 @@
 
 const { validationResult } = require('express-validator');
 const Trip = require('../models/trip');
+const { restart } = require('nodemon');
 
 //Export fetchAll to be used
 exports.fetchAll = async (req, res, next) => {
@@ -37,7 +38,6 @@ exports.deleteTrip = async(req,res,next)=>{
         } 
         next(err)
     }
-
 }
 
 //Export posting function to be used
@@ -49,19 +49,18 @@ exports.postTrip = async (req, res, next) => {
   //Set constants to variable data
   const user = req.body.userId;
   const tripname = req.body.tripname;
-  const parking= req.body.parking;
 
   //Create a post object using variables
   try {
     const post = {
       user: user,
       tripname: tripname,
-      parking: parking,
     };
 
     //Call save function
     const result = await Trip.save(post);
-    res.status(201).json({ message: 'Posted!' });
+    const catching = await Trip.catch();
+    res.status(201).json({ message: catching[0][0].id });
 
     
   //Catch errors

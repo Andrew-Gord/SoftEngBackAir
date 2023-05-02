@@ -31,9 +31,15 @@ module.exports = class Trip {
     //Function to insert new entry into database using values from passed objects
     static save(post){
         return db.execute(
-            'INSERT INTO Airflow.trip (user, tripname, parking) VALUES (?,?,?)',
-            [post.user, post.tripname, post.parking]
+            'INSERT INTO Airflow.trip (user, tripname, parking) VALUES (?,?,NULL)',
+            [post.user, post.tripname]
         );
+    }
+
+    static catch(){
+        return db.execute(
+            'select * from Airflow.trip ORDER BY id DESC LIMIT 1'
+        )
     }
 
     static delete(id){
